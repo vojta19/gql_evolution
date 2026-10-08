@@ -81,3 +81,7 @@ GraphTypeDefinitions/
 ```bash
 python .CoderDefinitions/main.py
 ```
+
+
+
+.\.venv\Scripts\Activate.ps1
