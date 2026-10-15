@@ -1,21 +1,23 @@
-import typing
-import datetime
-import dataclasses
-import sqlalchemy
+import typing # pyright: ignore[reportUnusedImport]
 
-from sqlalchemy import (
-    Column,
-    String,
-    Text,
-    DateTime,
-    ForeignKey,
-)
+import datetime # pyright: ignore[reportUnusedImport]
 
-from sqlalchemy.orm import Mapped, mapped_column, synonym
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import relationship, column_property
+import dataclasses # pyright: ignore[reportUnusedImport]
 
-from src.DBDefinitions.BaseModel import BaseDBModel, UUIDColumn, UUIDFKey, IDType
+import sqlalchemy # pyright: ignore[reportUnusedImport]
+
+from sqlalchemy import (Column, String, Text, DateTime, ForeignKey,) # pyright: ignore[reportUnusedImport]
+
+
+from sqlalchemy.orm import Mapped, mapped_column, synonym # pyright: ignore[reportUnusedImport]
+
+from sqlalchemy.ext.hybrid import hybrid_property # pyright: ignore[reportUnusedImport]
+
+from sqlalchemy.orm import relationship, column_property # pyright: ignore[reportUnusedImport]
+
+
+from src.DBDefinitions.BaseModel import BaseDBModel, UUIDColumn, UUIDFKey, IDType # pyright: ignore[reportUnusedImport]
+
 
 
 class AnnotationModel(BaseDBModel):
@@ -23,12 +25,14 @@ class AnnotationModel(BaseDBModel):
 
     # Identifikátor anotované entity
     entity_id: Mapped[IDType] = mapped_column(
+        kw_only=True,
         nullable=False,
         index=True,
     )
 
     # Typ anotované entity
     entity_type_id: Mapped[IDType] = mapped_column(
+        kw_only=True,
         nullable=False,
         index=True,
     )
@@ -36,11 +40,13 @@ class AnnotationModel(BaseDBModel):
     # Název anotace
     title: Mapped[str] = mapped_column(
         String,
+        kw_only=True,
         nullable=False,
     )
 
     # Vlastník anotace
     owner_id: Mapped[IDType] = mapped_column(
+        kw_only=True,
         nullable=False,
         index=True,
     )
@@ -48,5 +54,6 @@ class AnnotationModel(BaseDBModel):
     # Text anotace
     content: Mapped[str] = mapped_column(
         Text,
+        kw_only=True,
         nullable=False,
     )

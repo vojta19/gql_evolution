@@ -2,17 +2,19 @@ from uoishelpers.dataloaders.LoaderMapBase import LoaderMapBase
 from uoishelpers.dataloaders.IDLoader import IDLoader
 
 import src.DBDefinitions
-from src.DBDefinitions import BaseDBModel, EventModel, EventInvitationModel
+from src.DBDefinitions import AnnotationModel, BaseDBModel, EventModel, EventInvitationModel
 
 
 class LoaderMap(LoaderMapBase[BaseDBModel]):
     BaseModel = BaseDBModel
 
+    AnnotationModel: IDLoader[src.DBDefinitions.AnnotationModel] = None
     EventModel: IDLoader[src.DBDefinitions.EventModel] = None
     EventInvitationModel: IDLoader[src.DBDefinitions.EventInvitationModel] = None
 
     def __init__(self, session):
         super().__init__(session)
+        self.AnnotationModel = self.get(AnnotationModel)
         self.EventModel = self.get(EventModel)
         self.EventInvitationModel = self.get(EventInvitationModel)
 

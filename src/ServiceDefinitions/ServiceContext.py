@@ -4,12 +4,18 @@ import typing
 from src.Dataloaders import LoaderMap
 
 if typing.TYPE_CHECKING:
+    from src.ServiceDefinitions.Domain_Annotation.AnnotationService import AnnotationService as _AnnotationService
     from src.ServiceDefinitions.Domain_Events.EventService import EventService as _EventService
     from src.ServiceDefinitions.Domain_Events.EventInvitationService import EventInvitationService as _EventInvitationService
 
 
 @dataclasses.dataclass(frozen=True)
 class ServiceRegistry:
+    @property
+    def AnnotationService(self) -> type['_AnnotationService']:
+        from src.ServiceDefinitions.Domain_Annotation.AnnotationService import AnnotationService
+        return AnnotationService
+
     @property
     def EventService(self) -> type['_EventService']:
         from src.ServiceDefinitions.Domain_Events.EventService import EventService
