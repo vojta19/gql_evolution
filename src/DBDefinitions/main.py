@@ -36,6 +36,8 @@ from sqlalchemy.orm.properties import ColumnProperty, RelationshipProperty
 
 from uoishelpers.dataloaders import prepareSelect
 
+from src.DBDefinitions.seed import init_database_data
+
 from . import BaseDBModel, ComposeConnectionString, startEngine
 
 
@@ -600,7 +602,10 @@ async def run_async(args: argparse.Namespace) -> typing.Any:
 
     async with session_maker() as session:
         operation = args.operation.lower()
-
+        if operation == "seed":
+            await init_database_data(session)
+            return {"ok": True, "message": "Seedování dokončeno"}
+        
         if operation in {"create", "c"}:
             return await op_create(session, model_cls, payload)
 

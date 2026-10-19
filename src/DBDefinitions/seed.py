@@ -47,7 +47,10 @@ async def init_database_data(session: AsyncSession, get_demodata=get_demodata) -
     """
 
     json_data = get_demodata()
-
+    for annotation in json_data.get("annotations", []):
+        for field in ("id", "entity_id", "entity_type_id", "owner_id"):
+            if annotation.get(field) is not None:
+                annotation[field] = uuid.UUID(str(annotation[field]))
     Models = [
         mapper.class_
         for mapper in BaseDBModel.registry.mappers
@@ -84,10 +87,8 @@ async def init_database_data(session: AsyncSession, get_demodata=get_demodata) -
 
     @asynccontextmanager
     async def session_maker():
-        try:
-            yield session
-        finally:
-            pass
+        async with AsyncSession(bind=session.bind) as new_session:
+            yield new_session
 
     await ImportModels(session_maker, ModelsToImport, json_data)
 
