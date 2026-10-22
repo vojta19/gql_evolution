@@ -1,87 +1,82 @@
-# Event boilerplate project
+# Deníček změn
 
-Demonstrační boilerplate pro doménu `Event / EventInvitation` podle funkčního vzoru ze `src.zip`.
+## 22.10.2026
+**Co bylo změněno?**
+- Tvorba souboru `.env`, která povoluje demodata a naplňuje tabulku příslušnými daty.
 
-## Zásady
+**Co jsme objevili?**
+- Nesprávná funkčnost a tvorba tabulky z důvodu `isDemoData = false`, tabulka se nesprávně tvořila.
 
-- GQL vrstva nesmí importovat DB vrstvu ani typově odkazovat na DB modely.
-- Pro decoupling mezi vrstvami se používají `Protocol` kontrakty v `src/common/protocols.py`.
-- `LoaderMap`, services a GQL typy jsou explicitně definované.
-- `EventInvitation` je vazba `Event - User` se stavem pozvánky/účasti.
-- `UserGQLModel` je externí federovaná entita pro Apollo Federation.
-- `StateGQLModel` je také externí federovaná entita, protože stav pozvánky typicky patří do UG / state-machine subgrafu.
-- Page resolvery vždy používají `whereType` definovaný přes `@createInputs2`.
-- Mutace používají `BaseService.ExecuteServiceMethod` a `CreateErrorCallback`, aby resolver neobsahoval lokální zpracování výjimek.
-- `BaseGQLModel.from_dataclass()` zůstává kompatibilní název, ale interně volá `from_db()` a ukládá původní entitu do `_dbdata` bez `dataclasses.asdict()`.
+**Problém**
+- Po dokončení seedování a následném spuštění tabulky se demodata nenačetla do tabulka a ta se vytvořila prázdná.
 
+**Řešení**
+- Vytvořili jsme soubor `.env`, kde jsme demodata odblokovali.
 
-## Závislost na `uoishelpers`
+## 19.10.2026
+**Co bylo změněno?**
+- Úprava `main.py` a `seed.py` v `DBDefinitions`.
+- Doplnění `systemdata.json` o cvičná demo data.
 
-Projekt pracuje s balíkem `uoishelpers` z repozitáře:
+**Co jsme objevili?**
+- V hlavním spouštěcím souboru nebylo implifikováno seedování dat našeho modelu.
+- V `seed.py` chyběly požadavky našeho modelu.
+- Chyběly naše cvičná data pro názornou ukázku funkčnosti.
 
-```text
-https://github.com/hrbolek/uoishelpers/archive/4e41615436d6effbe248d8503e4df373549bcec3.zip
-```
+**Problém**
+- Nemohli jsme nijak spustit náš model, protože nenačítal žádná data a nebyl vůbec napojen na hlavní spouštěcí soubor.
 
-Závislost je uvedená přímo v `pyproject.toml`:
+**Řešení**
+- Upravili jsme příslušné soubory a vytvořili počáteční demo data.
 
-```toml
-'uoishelpers @ https://github.com/hrbolek/uoishelpers/archive/4e41615436d6effbe248d8503e4df373549bcec3.zip'
-```
+## 15.10.2026
+**Co bylo změněno?**
+- V `DBDefinitions` příslušná úprava souborů našeho modelu.
+- V `Dataoaders` byl připojen náš model do souboru `__init__.py`.
+- Do složky `ServiceDefinitions` byla vytvořena podsložka `Domain_Annotation` se soubory `AnnotationService` a `__init__.py`.
+- Úprava `ServiceContext.py`.
 
-Boilerplate proto nepřidává lokální náhražky pro `uoishelpers`. Používá importy ve stejném stylu jako funkční vzor, například:
+**Co jsme objevili?**
+- Chyběly základní složky a soubory našeho modelu napříč různými vrstvami `DBDefinitions`.
+- Model nebyl správně připojen do spouštěcího souboru `main.py`.
 
-```python
-from uoishelpers.dataloaders.LoaderMapBase import LoaderMapBase
-from uoishelpers.dataloaders.IDLoader import IDLoader
-from uoishelpers.gqlpermissions import OnlyForAuthentized
-from uoishelpers.resolvers import PageResolver, createInputs2
-```
+**Problém**
+- Model nešel spustit, nebyly řádně připojeny příslušné knihovny a v `ServiceDefinitions` vůbec neexistoval náš model.
 
-Závislost je připnutá na konkrétní commit, aby instalace i CI používaly stejnou verzi.
+**Řešení**
+- Vytvořili jsme nezbytně důležité soubory s patřičnými knihovnami pro náš model.
+- Do již vzniklých a funkčních souborů jsme napojili náš modelu.
 
-## Vrstvy
+## 12.10.2026
+**Co bylo změněno?**
+- V `DBDefinitions` vznikla složka `Domain_Annotation` se soubory `AnnotationModel.py` a `__init__.py`.
+- V `GraphTypeDefinitions` vznikla opět složka `Domain_Annotation` se soubory `AnnotationGQLModel.py` a `__init__.py`.
+- Byly upraveny soubory `mutation.py` a `query.py` podle našich potřeb.
 
-```text
-DBDefinitions/
-  Domain_Events/
-    EventModel.py
-    EventInvitationModel.py
+**Co jsme objevili?**
+- Původní projekt gql evolution obsahoval pouze model Event a EventType a nikoliv náš modul Annotation.
 
-Dataloaders/
-  __init__.py        # explicitní LoaderMap
+**Problém**
+- Našemu modelu úplně chyběly kořenové soubory a jejich napojení.
 
-ServiceDefinitions/
-  Domain_Events/
-    EventService.py
-    EventInvitationService.py
+**Řešení**
+- Vytvořili jsme základní soubory našeho modelu a napojili je na již vytvořený projekt.
 
-GraphTypeDefinitions/
-  BaseGQLModel.py    # _dbdata + LoaderName kontrakt
-  Domain_Events/
-    EventGQLModel.py
-    EventInvitationGQLModel.py
-  Domain_UG/
-    UserGQLModel.py  # externí federovaná entita
-    StateGQLModel.py # externí federovaná entita
-```
+## Časová osa commitů
+| Datum | Hlavní změna | Stručný popis |
+|---|---|---|
+| 22.10.2026 | Odblokování demodat | Tvorba souboru `.env`, který demodata povoluje a naplňuje tabulku daty. |
+| 19.10.2026 | Přidání testovací anotace | Úprava `main.py` a `seed.py` a tvorba nových demodat. |
+| 15.10.2026 | Spuštění main – iniciace | Tvorba a úprava souborů, zakomponování našeho modelu do `main.py`. |
+| 12.10.2026 | Úvodní tvorba modelu | Tvorba kořenových a základních souborů modelu `Annotation` a jeho napojení. |
 
-## Studenti typicky doplní
-
-1. DB model do `DBDefinitions/Domain_X`.
-2. Explicitní položku v `LoaderMap`.
-3. Service třídu do `ServiceDefinitions/Domain_X`.
-4. GQL typ bez importu DB vrstvy.
-5. `InputFilter` přes `@createInputs2`.
-6. Query přes `PageResolver(... whereType=...)`.
-7. Mutace přes `ExecuteServiceMethod`.
-
-## Spuštění Coder
+## Jak spustit konkrétní app
 
 ```bash
-python .CoderDefinitions/main.py
+python -m src.DBDefinitions.main Annotation seed '{}' --no-makeup
 ```
+## Jak sestavit konkrétní app
 
-
-
-.\.venv\Scripts\Activate.ps1
+```bash
+python -m src.DBDefinitions.main Annotation List '{}' --no-makeup
+```
