@@ -1,3 +1,6 @@
+#python -m src.DBDefinitions.main Annotation seed '{}' --no-makeup
+#python -m src.DBDefinitions.main Annotation List '{}' --no-makeup  
+
 from __future__ import annotations
 
 import os
