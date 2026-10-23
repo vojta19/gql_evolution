@@ -1,18 +1,24 @@
+
 {
-    "eventtypes": [
-    ],
-    "events": [
-    ],
-    "event_invitations": [
-    ],
+    "eventtypes": [],
+    "events": [],
+    "event_invitations": [],
     "annotations": [
-    {
-        "id": "695c85d6-efbf-5984-bf02-a9c3ba6e64a1",
-        "entity_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
-        "entity_type_id": "ce9e1f8c-1331-50b9-926c-fb8ea9df53c5",
-        "owner_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
-        "title": "Testovací anotace",
-        "content": "Toto je první anotace přiřazená k uživateli."
-    }
-]
+        {
+            "id": "695c85d6-efbf-5984-bf02-a9c3ba6e64a1",
+            "entity_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
+            "entity_type_id": "ce9e1f8c-1331-50b9-926c-fb8ea9df53c5",
+            "owner_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
+            "title": "Testovací anotace",
+            "content": "Toto je první anotace přiřazená k uživateli."
+        },
+        {
+            "id": "2151ca13-fdf1-42c9-93be-bfe1c9962ff0",
+            "entity_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
+            "entity_type_id": "ce9e1f8c-1331-50b9-926c-fb8ea9df53c5",
+            "owner_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
+            "title": "Druhá testovací anotace",
+            "content": "Toto je druhá anotace přiřazená ke stejnému uživateli."
+        }
+    ]
 }
