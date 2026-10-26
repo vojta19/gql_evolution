@@ -14,6 +14,7 @@ from uoishelpers.resolvers import (
     InsertError,
     InputModelMixin,
     PageResolver,
+    ScalarResolver,
     UpdateError,
     createInputs2,
 )
@@ -21,11 +22,16 @@ from uoishelpers.resolvers import (
 from src.GraphTypeDefinitions.ApplicationInfo import ApplicationInfo
 from src.GraphTypeDefinitions.BaseGQLModel import BaseGQLModel, IDType
 
+AnnotationTypeGQLModel = typing.Annotated[
+    "AnnotationTypeGQLModel",
+    strawberry.lazy(".AnnotationTypeGQLModel"),
+]
 
 @createInputs2
 class AnnotationInputFilter:
     entity_id: IDType
     entity_type_id: IDType
+    annotation_type_id: IDType
     title: str
     owner_id: IDType
     content: str
@@ -49,6 +55,20 @@ class AnnotationGQLModel(BaseGQLModel):
         default=None,
         description="Type of the annotated entity",
         permission_classes=[OnlyForAuthentized],
+    )
+
+    annotation_type_id: typing.Optional[IDType] = strawberry.field(
+        default=None,
+        description="ID of the annotation type",
+        permission_classes=[OnlyForAuthentized],
+    )
+
+    annotation_type: typing.Optional[AnnotationTypeGQLModel] = strawberry.field(
+        description="Type of the annotation",
+        permission_classes=[OnlyForAuthentized],
+        resolver=ScalarResolver[AnnotationTypeGQLModel](
+            fkey_field_name="annotation_type_id",
+        ),
     )
 
     title: typing.Optional[str] = strawberry.field(
@@ -99,6 +119,11 @@ class AnnotationInsertGQLModel(InputModelMixin):
         description="Type of the annotated entity"
     )
 
+    annotation_type_id: typing.Optional[IDType] = strawberry.field(
+        description="ID of the annotation type",
+        default=None,
+    )
+
     title: str = strawberry.field(
         description="Annotation title"
     )
@@ -137,6 +162,11 @@ class AnnotationUpdateGQLModel:
 
     content: typing.Optional[str] = strawberry.field(
         description="Annotation text content",
+        default=strawberry.UNSET,
+    )
+
+    annotation_type_id: typing.Optional[IDType] = strawberry.field(
+        description="ID of the annotation type",
         default=strawberry.UNSET,
     )
 

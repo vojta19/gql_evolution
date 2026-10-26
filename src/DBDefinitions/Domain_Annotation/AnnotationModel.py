@@ -7,6 +7,7 @@ import dataclasses # pyright: ignore[reportUnusedImport]
 import sqlalchemy # pyright: ignore[reportUnusedImport]
 
 from sqlalchemy import (Column, String, Text, DateTime, ForeignKey,) # pyright: ignore[reportUnusedImport]
+from typing import Optional
 
 
 from sqlalchemy.orm import Mapped, mapped_column, synonym # pyright: ignore[reportUnusedImport]
@@ -49,6 +50,21 @@ class AnnotationModel(BaseDBModel):
         kw_only=True,
         nullable=False,
         index=True,
+    )
+
+    # Typ anotace
+    annotation_type_id: Mapped[Optional[IDType]] = mapped_column(
+        ForeignKey("annotationtypes.id"),
+        kw_only=True,
+        nullable=True,
+        default=None,
+        index=True,
+    )
+
+    annotation_type = relationship(
+        "AnnotationTypeModel",
+        back_populates="annotations",
+        uselist=False,
     )
 
     # Text anotace

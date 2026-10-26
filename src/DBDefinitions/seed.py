@@ -50,8 +50,18 @@ async def init_database_data(session: AsyncSession, get_demodata=get_demodata) -
     """
 
     json_data = get_demodata()
+    for annotation_type in json_data.get("annotationtypes", []):
+        if annotation_type.get("id") is not None:
+            annotation_type["id"] = uuid.UUID(str(annotation_type["id"]))
+
     for annotation in json_data.get("annotations", []):
-        for field in ("id", "entity_id", "entity_type_id", "owner_id"):
+        for field in (
+            "id",
+            "entity_id",
+            "entity_type_id",
+            "annotation_type_id",
+            "owner_id",
+        ):
             if annotation.get(field) is not None:
                 annotation[field] = uuid.UUID(str(annotation[field]))
     Models = [

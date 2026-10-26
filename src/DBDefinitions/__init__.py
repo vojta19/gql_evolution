@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from .BaseModel import BaseDBModel, IDType, UUIDColumn, UUIDFKey
-from .Domain_Annotation import AnnotationModel
+from .Domain_Annotation import AnnotationModel, AnnotationTypeModel
 from .Domain_Events import EventModel, EventInvitationModel, EventTypeModel
 
 
@@ -71,7 +71,7 @@ def ComposeConnectionString():
 
 __all__ = [
     'BaseDBModel', 'IDType', 'UUIDColumn', 'UUIDFKey',
-    'AnnotationModel',
+    'AnnotationModel', 'AnnotationTypeModel',
     'EventModel', 'EventInvitationModel', 'EventTypeModel',
     'startEngine', 'ComposeConnectionString', 'EventTypeModel'
 ]
