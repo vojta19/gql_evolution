@@ -1,5 +1,24 @@
 # Deníček změn
 
+## 26.10.2026
+**Co bylo změněno?**
+- Přidána nová entita `AnnotationType` pro evidenci typů anotací, včetně českého a anglického názvu.
+- Entita byla zapojena napříč databázovou, service a GraphQL vrstvou; GraphQL nabízí načtení podle ID, stránkový dotaz a operace vložení, úpravy a smazání.
+- Anotace nyní může odkazovat na svůj typ přes volitelný cizí klíč `annotation_type_id`. Doplněny jsou vztahy z anotace na typ i z typu na související anotace.
+- Do `systemdata.json` byla přidána ukázková data typů a anotací a doplněny testy vztahu i dostupnosti operací ve schématu.
+
+**Co jsme objevili?**
+- Pro rozlišování anotací bylo potřeba oddělit jejich typ od samotného textu anotace do samostatné entity.
+- Vztah musí být volitelný, aby bylo možné zachovat i anotace bez přiřazeného typu.
+
+**Problém**
+- Model anotace dosud neměl samostatný číselník typů ani vazbu, přes kterou by šlo typ anotace ukládat a zobrazovat.
+
+**Řešení**
+- Vytvořili jsme `AnnotationTypeModel`, jeho GraphQL typ a službu a zaregistrovali potřebný dataloader.
+- Do `AnnotationModel` jsme přidali nepovinnou vazbu na typ. GraphQL zpřístupňuje vztah v obou směrech a nabízí CRUD i dotazy pro typy anotací.
+- Připravili jsme ukázková data a ověřovací testy pro databázový vztah a GraphQL schéma.
+
 ## 22.10.2026
 **Co bylo změněno?**
 - Tvorba souboru `.env`, která povoluje demodata a naplňuje tabulku příslušnými daty.
@@ -32,7 +51,7 @@
 ## 15.10.2026
 **Co bylo změněno?**
 - V `DBDefinitions` příslušná úprava souborů našeho modelu.
-- V `Dataoaders` byl připojen náš model do souboru `__init__.py`.
+- V `Dataloaders` byl připojen náš model do souboru `__init__.py`.
 - Do složky `ServiceDefinitions` byla vytvořena podsložka `Domain_Annotation` se soubory `AnnotationService` a `__init__.py`.
 - Úprava `ServiceContext.py`.
 
@@ -65,6 +84,7 @@
 ## Časová osa commitů
 | Datum | Hlavní změna | Stručný popis |
 |---|---|---|
+| 26.10.2026 | Nová entita AnnotationType | Přidání typů anotací, jejich CRUD v GraphQL, vazby na anotace a ukázkových dat. |
 | 22.10.2026 | Odblokování demodat | Tvorba souboru `.env`, který demodata povoluje a naplňuje tabulku daty. |
 | 19.10.2026 | Přidání testovací anotace | Úprava `main.py` a `seed.py` a tvorba nových demodat. |
 | 15.10.2026 | Spuštění main – iniciace | Tvorba a úprava souborů, zakomponování našeho modelu do `main.py`. |
